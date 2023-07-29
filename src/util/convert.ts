@@ -1,16 +1,16 @@
 import { Text } from "../types/Text"
 
 export const convertText2TextType = (ordinal: string) => {
-    const replaceSymbols = [".", ",", ":", ";", "!", "?"]
+    const regex = /([,.'":;~`!\?@#$%^&*\(\)\[\]])/g
     let replaced = ordinal
-    for (const symbol of replaceSymbols) {
-        replaced = replaced.replace(symbol, " " + symbol)
-    }
+    replaced = replaced.replace(regex, " " + "$1" + " ")
+    replaced = replaced.replace(/[ ]+/g, " ")
+
     const splitted = replaced.split(" ")
     return splitted.map(word => (
         {
             word: word,
-            canAnnotate: replaceSymbols.indexOf(word) === -1
+            canAnnotate: !regex.test(word)
         }
     ) as Text)
 }
