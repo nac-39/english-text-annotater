@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import { convertText2TextType } from "./util/convert";
 import { PrettyText } from "./components/PrettyText";
 import { Text } from "./types/Text";
@@ -16,7 +16,17 @@ const App = () => {
   };
   return (
     <div className=" max-w-lg">
-      <textarea value={ordinal} onChange={handleOrdinalChange}></textarea>
+      <label htmlFor="message" className="block mb-2 text-sm font-medium text-gray-900 ">
+        テキスト
+      </label>
+      <textarea
+        id="message"
+        rows={4}
+        value={ordinal}
+        onChange={handleOrdinalChange}
+        className="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500"
+        placeholder="Input your text here..."
+      ></textarea>
       <button
         onClick={() =>
           setWords(() => {
