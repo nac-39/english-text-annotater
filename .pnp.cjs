@@ -28,6 +28,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
         [null, {\
           "packageLocation": "./",\
           "packageDependencies": [\
+            ["@react-icons/all-files", "virtual:6b3c8baf5fb3dcb5540e0834c87c64f69c5eb7c64d538917b2273696dc7dd65f872d4c6d39f513f6b6199ddfb529a20df416743f34878c9aa8a207f48e4bad35#npm:4.1.0"],\
             ["@testing-library/jest-dom", "npm:5.17.0"],\
             ["@testing-library/react", "virtual:6b3c8baf5fb3dcb5540e0834c87c64f69c5eb7c64d538917b2273696dc7dd65f872d4c6d39f513f6b6199ddfb529a20df416743f34878c9aa8a207f48e4bad35#npm:13.4.0"],\
             ["@testing-library/user-event", "virtual:6b3c8baf5fb3dcb5540e0834c87c64f69c5eb7c64d538917b2273696dc7dd65f872d4c6d39f513f6b6199ddfb529a20df416743f34878c9aa8a207f48e4bad35#npm:13.5.0"],\
@@ -4137,6 +4138,28 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "linkType": "HARD"\
         }]\
       ]],\
+      ["@react-icons/all-files", [\
+        ["npm:4.1.0", {\
+          "packageLocation": "./.yarn/cache/@react-icons-all-files-npm-4.1.0-0c7fb4e7cd-c34c644650.zip/node_modules/@react-icons/all-files/",\
+          "packageDependencies": [\
+            ["@react-icons/all-files", "npm:4.1.0"]\
+          ],\
+          "linkType": "SOFT"\
+        }],\
+        ["virtual:6b3c8baf5fb3dcb5540e0834c87c64f69c5eb7c64d538917b2273696dc7dd65f872d4c6d39f513f6b6199ddfb529a20df416743f34878c9aa8a207f48e4bad35#npm:4.1.0", {\
+          "packageLocation": "./.yarn/__virtual__/@react-icons-all-files-virtual-7061851525/0/cache/@react-icons-all-files-npm-4.1.0-0c7fb4e7cd-c34c644650.zip/node_modules/@react-icons/all-files/",\
+          "packageDependencies": [\
+            ["@react-icons/all-files", "virtual:6b3c8baf5fb3dcb5540e0834c87c64f69c5eb7c64d538917b2273696dc7dd65f872d4c6d39f513f6b6199ddfb529a20df416743f34878c9aa8a207f48e4bad35#npm:4.1.0"],\
+            ["@types/react", "npm:18.2.17"],\
+            ["react", "npm:18.2.0"]\
+          ],\
+          "packagePeers": [\
+            "@types/react",\
+            "react"\
+          ],\
+          "linkType": "HARD"\
+        }]\
+      ]],\
       ["@rollup/plugin-babel", [\
         ["npm:5.3.1", {\
           "packageLocation": "./.yarn/cache/@rollup-plugin-babel-npm-5.3.1-6039a4d033-220d71e464.zip/node_modules/@rollup/plugin-babel/",\
@@ -8224,6 +8247,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageLocation": "./",\
           "packageDependencies": [\
             ["english-text-annotater", "workspace:."],\
+            ["@react-icons/all-files", "virtual:6b3c8baf5fb3dcb5540e0834c87c64f69c5eb7c64d538917b2273696dc7dd65f872d4c6d39f513f6b6199ddfb529a20df416743f34878c9aa8a207f48e4bad35#npm:4.1.0"],\
             ["@testing-library/jest-dom", "npm:5.17.0"],\
             ["@testing-library/react", "virtual:6b3c8baf5fb3dcb5540e0834c87c64f69c5eb7c64d538917b2273696dc7dd65f872d4c6d39f513f6b6199ddfb529a20df416743f34878c9aa8a207f48e4bad35#npm:13.4.0"],\
             ["@testing-library/user-event", "virtual:6b3c8baf5fb3dcb5540e0834c87c64f69c5eb7c64d538917b2273696dc7dd65f872d4c6d39f513f6b6199ddfb529a20df416743f34878c9aa8a207f48e4bad35#npm:13.5.0"],\

@@ -1,19 +1,50 @@
+import { on } from "events";
 import React, { useRef, useState } from "react";
 import { Text } from "../types/Text";
 
-export const PrettyText = (props: { text: Text; showRuby: boolean; updateValue?: (text: Text) => void }) => {
+type Props = {
+  text: Text;
+  showRuby: boolean;
+  updateValue?: (text: Text) => void;
+  searchQuery?: string;
+};
+
+export const PrettyText = (props: Props) => {
   const [value, setValue] = useState(props.text);
   const [isHover, setIsHover] = useState(false);
   const [isLocked, setIsLocked] = useState(false);
+  const [showSearch, setShowSearch] = useState(false);
   const isShow = isHover || isLocked;
 
   const inputRef = useRef<HTMLInputElement>(null);
 
-  const handleOnClick = (e: React.MouseEvent) => {
-    // setIsLocked(!isLocked);
+  const handleOnSingleClick = () => {
     if (inputRef && inputRef.current) inputRef.current.focus();
+    setShowSearch(!showSearch);
   };
 
+  const handleOnDoubleClick = () => {
+    onClickSearch();
+  };
+
+  const onClickSearch = () => {
+    setShowSearch(!showSearch);
+    window.open(`https://www.google.com/search?q=${value.word} ${props.searchQuery}`, "_blank", "noopener noreferrer");
+  };
+  let clickCount = 0;
+  const handleSingleOrDoubleClick = () => {
+    clickCount++;
+    if (clickCount < 2) {
+      setTimeout(() => {
+        if (1 < clickCount) {
+          handleOnDoubleClick();
+        } else {
+          handleOnSingleClick();
+        }
+        clickCount = 0;
+      }, 200);
+    }
+  };
   const handleChangeValue = (e: React.ChangeEvent<HTMLInputElement>) => {
     const newText = { word: value.word, annotation: e.target.value, canAnnotate: value.canAnnotate };
     setValue(newText);
@@ -27,6 +58,7 @@ export const PrettyText = (props: { text: Text; showRuby: boolean; updateValue?:
     if (e.key === "Enter") {
       setIsLocked(false);
       setIsHover(false);
+      setShowSearch(false);
     }
   };
 
@@ -47,7 +79,20 @@ export const PrettyText = (props: { text: Text; showRuby: boolean; updateValue?:
   }
 
   return (
-    <span className="relative" onClick={handleOnClick} onMouseEnter={() => setIsHover(true)} onMouseLeave={() => setIsHover(false)}>
+    <span
+      className="relative cursor-pointer"
+      onClick={() => handleSingleOrDoubleClick()}
+      onMouseEnter={() => setIsHover(true)}
+      onMouseLeave={() => {
+        setIsHover(false);
+        setShowSearch(false);
+      }}
+    >
+      {showSearch && value.word && (
+        <span className=" rounded-full bg-gradient-to-tr bg-yellow-300 p-0.5 absolute -top-8 left-0" onClick={onClickSearch}>
+          調
+        </span>
+      )}
       <span className={(isHover ? "text-red-400" : "") + (value.annotation?.length ? "underline" : "")}>{value.word}</span>
       {isShow && value.word && value.canAnnotate && (
         <input
