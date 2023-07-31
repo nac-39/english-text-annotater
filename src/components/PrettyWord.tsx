@@ -15,7 +15,7 @@ type Props = {
   searchQuery?: string;
 };
 
-export const PrettyText = (props: Props) => {
+export const PrettyWord = (props: Props) => {
   const [value, setValue] = useState(props.text);
   const [isHover, setIsHover] = useState(false);
   const [isLocked, setIsLocked] = useState(false);
