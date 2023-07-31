@@ -1,10 +1,16 @@
-import { on } from "events";
 import React, { useRef, useState } from "react";
 import { Text } from "../types/Text";
 
+type HTMLElementProps = JSX.IntrinsicElements &
+  Record<
+    keyof JSX.IntrinsicElements,
+    { [p: `data-${string}`]: string | number }
+  >;
 type Props = {
   text: Text;
   showRuby: boolean;
+  isSelected: boolean;
+  divProps?: HTMLElementProps["div"];
   updateValue?: (text: Text) => void;
   searchQuery?: string;
 };
@@ -29,7 +35,11 @@ export const PrettyText = (props: Props) => {
 
   const onClickSearch = () => {
     setShowSearch(!showSearch);
-    window.open(`https://www.google.com/search?q=${value.word} ${props.searchQuery}`, "_blank", "noopener noreferrer");
+    window.open(
+      `https://www.google.com/search?q=${value.word} ${props.searchQuery}`,
+      "_blank",
+      "noopener noreferrer"
+    );
   };
   let clickCount = 0;
   const handleSingleOrDoubleClick = () => {
@@ -46,7 +56,11 @@ export const PrettyText = (props: Props) => {
     }
   };
   const handleChangeValue = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const newText = { word: value.word, annotation: e.target.value, canAnnotate: value.canAnnotate };
+    const newText = {
+      word: value.word,
+      annotation: e.target.value,
+      canAnnotate: value.canAnnotate,
+    };
     setValue(newText);
     // 親コンポーネントの値も更新
     if (props.updateValue) props.updateValue(newText);
@@ -70,42 +84,60 @@ export const PrettyText = (props: Props) => {
           <>
             {" "}
             <rp>(</rp>
-            <rt className=" text-center text-orange-300">{props.text.annotation}</rt>
+            <rt className=" text-center text-orange-300">
+              {props.text.annotation}
+            </rt>
             <rp>)</rp>
           </>
         )}
       </ruby>
     );
-  }
-
-  return (
-    <span
-      className="relative cursor-pointer"
-      onClick={() => handleSingleOrDoubleClick()}
-      onMouseEnter={() => setIsHover(true)}
-      onMouseLeave={() => {
-        setIsHover(false);
-        setShowSearch(false);
-      }}
-    >
-      {showSearch && value.word && (
-        <span className=" rounded-full bg-gradient-to-tr bg-yellow-300 p-0.5 absolute -top-8 left-0" onClick={onClickSearch}>
-          調
+  } else {
+    return (
+      <span
+        {...props.divProps}
+        className={
+          "relative cursor-pointer" +
+          (props.isSelected && props.text.canAnnotate
+            ? " bg-yellow-100 selectable selected"
+            : " selectable")
+        }
+        onClick={() => handleSingleOrDoubleClick()}
+        onMouseEnter={() => setIsHover(true)}
+        onMouseLeave={() => {
+          setIsHover(false);
+          setShowSearch(false);
+        }}
+      >
+        {showSearch && value.word && (
+          <span
+            className=" rounded-full bg-gradient-to-tr bg-yellow-300 p-0.5 absolute -top-8 left-0"
+            onClick={onClickSearch}
+          >
+            調
+          </span>
+        )}
+        <span
+          className={
+            (isHover ? "text-red-400" : "") +
+            (value.annotation?.length ? "underline" : "")
+          }
+        >
+          {value.word}
         </span>
-      )}
-      <span className={(isHover ? "text-red-400" : "") + (value.annotation?.length ? "underline" : "")}>{value.word}</span>
-      {isShow && value.word && value.canAnnotate && (
-        <input
-          ref={inputRef}
-          placeholder="annotate..."
-          className=" z-50 absolute -bottom-7 left-0 shadow appearance-none border rounded w-min px-1 py-1 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-          value={value.annotation}
-          onChange={handleChangeValue}
-          onKeyDown={handleKeyDown}
-          onMouseEnter={() => setIsHover(true)}
-          onMouseLeave={() => setIsHover(false)}
-        />
-      )}
-    </span>
-  );
+        {isShow && value.word && value.canAnnotate && (
+          <input
+            ref={inputRef}
+            placeholder="annotate..."
+            className=" z-50 absolute -bottom-7 left-0 shadow appearance-none border rounded w-min px-1 py-1 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+            value={value.annotation}
+            onChange={handleChangeValue}
+            onKeyDown={handleKeyDown}
+            onMouseEnter={() => setIsHover(true)}
+            onMouseLeave={() => setIsHover(false)}
+          />
+        )}
+      </span>
+    );
+  }
 };

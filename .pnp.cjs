@@ -37,6 +37,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@types/react", "npm:18.2.17"],\
             ["@types/react-dom", "npm:18.2.7"],\
             ["@types/testing-library__jest-dom", "npm:5.14.9"],\
+            ["@viselect/react", "virtual:6b3c8baf5fb3dcb5540e0834c87c64f69c5eb7c64d538917b2273696dc7dd65f872d4c6d39f513f6b6199ddfb529a20df416743f34878c9aa8a207f48e4bad35#npm:3.3.1"],\
             ["react", "npm:18.2.0"],\
             ["react-dom", "virtual:6b3c8baf5fb3dcb5540e0834c87c64f69c5eb7c64d538917b2273696dc7dd65f872d4c6d39f513f6b6199ddfb529a20df416743f34878c9aa8a207f48e4bad35#npm:18.2.0"],\
             ["react-scripts", "virtual:6b3c8baf5fb3dcb5540e0834c87c64f69c5eb7c64d538917b2273696dc7dd65f872d4c6d39f513f6b6199ddfb529a20df416743f34878c9aa8a207f48e4bad35#npm:5.0.1"],\
@@ -5338,6 +5339,38 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "linkType": "HARD"\
         }]\
       ]],\
+      ["@viselect/react", [\
+        ["npm:3.3.1", {\
+          "packageLocation": "./.yarn/cache/@viselect-react-npm-3.3.1-ebdd0b3f44-5017980a88.zip/node_modules/@viselect/react/",\
+          "packageDependencies": [\
+            ["@viselect/react", "npm:3.3.1"]\
+          ],\
+          "linkType": "SOFT"\
+        }],\
+        ["virtual:6b3c8baf5fb3dcb5540e0834c87c64f69c5eb7c64d538917b2273696dc7dd65f872d4c6d39f513f6b6199ddfb529a20df416743f34878c9aa8a207f48e4bad35#npm:3.3.1", {\
+          "packageLocation": "./.yarn/__virtual__/@viselect-react-virtual-4b7832b233/0/cache/@viselect-react-npm-3.3.1-ebdd0b3f44-5017980a88.zip/node_modules/@viselect/react/",\
+          "packageDependencies": [\
+            ["@viselect/react", "virtual:6b3c8baf5fb3dcb5540e0834c87c64f69c5eb7c64d538917b2273696dc7dd65f872d4c6d39f513f6b6199ddfb529a20df416743f34878c9aa8a207f48e4bad35#npm:3.3.1"],\
+            ["@types/react", "npm:18.2.17"],\
+            ["@viselect/vanilla", "npm:3.3.1"],\
+            ["react", "npm:18.2.0"]\
+          ],\
+          "packagePeers": [\
+            "@types/react",\
+            "react"\
+          ],\
+          "linkType": "HARD"\
+        }]\
+      ]],\
+      ["@viselect/vanilla", [\
+        ["npm:3.3.1", {\
+          "packageLocation": "./.yarn/cache/@viselect-vanilla-npm-3.3.1-215733cb62-4c8f0fba08.zip/node_modules/@viselect/vanilla/",\
+          "packageDependencies": [\
+            ["@viselect/vanilla", "npm:3.3.1"]\
+          ],\
+          "linkType": "HARD"\
+        }]\
+      ]],\
       ["@webassemblyjs/ast", [\
         ["npm:1.11.6", {\
           "packageLocation": "./.yarn/cache/@webassemblyjs-ast-npm-1.11.6-d3fd2bb49a-38ef1b526c.zip/node_modules/@webassemblyjs/ast/",\
@@ -8256,6 +8289,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@types/react", "npm:18.2.17"],\
             ["@types/react-dom", "npm:18.2.7"],\
             ["@types/testing-library__jest-dom", "npm:5.14.9"],\
+            ["@viselect/react", "virtual:6b3c8baf5fb3dcb5540e0834c87c64f69c5eb7c64d538917b2273696dc7dd65f872d4c6d39f513f6b6199ddfb529a20df416743f34878c9aa8a207f48e4bad35#npm:3.3.1"],\
             ["react", "npm:18.2.0"],\
             ["react-dom", "virtual:6b3c8baf5fb3dcb5540e0834c87c64f69c5eb7c64d538917b2273696dc7dd65f872d4c6d39f513f6b6199ddfb529a20df416743f34878c9aa8a207f48e4bad35#npm:18.2.0"],\
             ["react-scripts", "virtual:6b3c8baf5fb3dcb5540e0834c87c64f69c5eb7c64d538917b2273696dc7dd65f872d4c6d39f513f6b6199ddfb529a20df416743f34878c9aa8a207f48e4bad35#npm:5.0.1"],\

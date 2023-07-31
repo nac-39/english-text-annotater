@@ -3279,6 +3279,24 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@viselect/react@npm:^3.3.1":
+  version: 3.3.1
+  resolution: "@viselect/react@npm:3.3.1"
+  dependencies:
+    "@viselect/vanilla": 3.3.1
+  peerDependencies:
+    react: ">=17.0.2"
+  checksum: 5017980a88c0cdd44eed0dd1f54764af8bd2f40bd71ad6d73623dfc3c8f66599a73c4532f9e230ce4f4746529f1ddf3fd5cee47410f1392a36d25ca0eb4e90b9
+  languageName: node
+  linkType: hard
+
+"@viselect/vanilla@npm:3.3.1":
+  version: 3.3.1
+  resolution: "@viselect/vanilla@npm:3.3.1"
+  checksum: 4c8f0fba0862402dcb06a4d5aa5a8e1c722bff59e6264b9865b2b1ae6b57b813a6e2ae598b7b738e6840ffd7e0f712a586077702c81484292d02d5badf0e3edf
+  languageName: node
+  linkType: hard
+
 "@webassemblyjs/ast@npm:1.11.6, @webassemblyjs/ast@npm:^1.11.5":
   version: 1.11.6
   resolution: "@webassemblyjs/ast@npm:1.11.6"
@@ -5597,6 +5615,7 @@ __metadata:
     "@types/react": ^18.2.17
     "@types/react-dom": ^18.2.7
     "@types/testing-library__jest-dom": ^5
+    "@viselect/react": ^3.3.1
     react: ^18.2.0
     react-dom: ^18.2.0
     react-scripts: 5.0.1
