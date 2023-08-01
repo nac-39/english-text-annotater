@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { convertText2TextType } from "./util/convert";
 import { SmartText } from "./components/SmartText";
+import { Mode } from "./components/SmartText";
 
 const App = () => {
   const initialWords = convertText2TextType(
@@ -11,6 +12,7 @@ const App = () => {
   const [showRuby, setShowRuby] = useState(false);
   const [searchQuery, setSearchQuery] = useState("意味");
   const [selected, setSelected] = useState<Set<number>>(() => new Set());
+  const [mode, setMode] = useState<Mode>("edit");
   const handleOrdinalChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     setOrdinal(e.target.value);
   };
@@ -52,6 +54,12 @@ const App = () => {
       >
         ルビ切り替え
       </button>
+      <button
+        onClick={() => setMode(mode === "edit" ? "view" : "edit")}
+        className="px-2 py-1 text-blue-500 border border-blue-500 font-semibold rounded hover:bg-blue-100"
+      >
+        モード切り替え
+      </button>
       <div>
         <label htmlFor="searchQuery">検索ワード「[単語] {searchQuery}」</label>
         <input
@@ -63,10 +71,12 @@ const App = () => {
         />
       </div>
       <div>showRuby= {showRuby ? "true" : "false"}</div>
+      <div>mode= {mode}</div>
       <div>ordinal = {words.map((w) => w.word).join(",")}</div>
       <div className=" h-80">selected= {selectedIds}</div>
       <SmartText
         text={words}
+        mode={mode}
         searchQuery={searchQuery}
         showRuby={showRuby}
         updateSelected={setSelected}

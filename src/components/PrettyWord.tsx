@@ -1,67 +1,57 @@
 import React, { useRef, useState } from "react";
 import { Text } from "../types/Text";
+import { Mode } from "./SmartText";
 
 type HTMLElementProps = JSX.IntrinsicElements &
   Record<
     keyof JSX.IntrinsicElements,
     { [p: `data-${string}`]: string | number }
   >;
+
 type Props = {
   text: Text;
   showRuby: boolean;
   isSelected: boolean;
+  mode: Mode;
   divProps?: HTMLElementProps["div"];
   updateValue?: (text: Text) => void;
   searchQuery?: string;
 };
 
 export const PrettyWord = (props: Props) => {
-  const [value, setValue] = useState(props.text);
   const [isHover, setIsHover] = useState(false);
   const [isLocked, setIsLocked] = useState(false);
   const [showSearch, setShowSearch] = useState(false);
-  const isShow = isHover || isLocked;
+  const Tag: keyof JSX.IntrinsicElements = props.showRuby ? "ruby" : "span";
 
   const inputRef = useRef<HTMLInputElement>(null);
+  const isShowInput = isLocked && props.text.word && props.text.canAnnotate;
 
-  const handleOnSingleClick = () => {
+  const handleOnSingleClick = (e: React.MouseEvent<HTMLSpanElement>) => {
     if (inputRef && inputRef.current) inputRef.current.focus();
-    setShowSearch(!showSearch);
+    if (e.ctrlKey || e.metaKey) {
+      searchInNewTab();
+    }
+    if (props.text.canAnnotate) {
+      setIsLocked(!isLocked);
+      setIsHover(!isHover);
+    }
   };
 
-  const handleOnDoubleClick = () => {
-    onClickSearch();
-  };
-
-  const onClickSearch = () => {
+  const searchInNewTab = () => {
     setShowSearch(!showSearch);
     window.open(
-      `https://www.google.com/search?q=${value.word} ${props.searchQuery}`,
+      `https://www.google.com/search?q=${props.text.word} ${props.searchQuery}`,
       "_blank",
       "noopener noreferrer"
     );
   };
-  let clickCount = 0;
-  const handleSingleOrDoubleClick = () => {
-    clickCount++;
-    if (clickCount < 2) {
-      setTimeout(() => {
-        if (1 < clickCount) {
-          handleOnDoubleClick();
-        } else {
-          handleOnSingleClick();
-        }
-        clickCount = 0;
-      }, 200);
-    }
-  };
   const handleChangeValue = (e: React.ChangeEvent<HTMLInputElement>) => {
     const newText = {
-      word: value.word,
+      word: props.text.word,
       annotation: e.target.value,
-      canAnnotate: value.canAnnotate,
+      canAnnotate: props.text.canAnnotate,
     };
-    setValue(newText);
     // 親コンポーネントの値も更新
     if (props.updateValue) props.updateValue(newText);
   };
@@ -76,68 +66,59 @@ export const PrettyWord = (props: Props) => {
     }
   };
 
-  if (props.showRuby) {
-    return (
-      <ruby style={{ rubyPosition: "under" }}>
-        {props.text.word}{" "}
-        {props.text.annotation && (
-          <>
-            {" "}
-            <rp>(</rp>
-            <rt className=" text-center text-orange-300">
-              {props.text.annotation}
-            </rt>
-            <rp>)</rp>
-          </>
-        )}
-      </ruby>
-    );
-  } else {
-    return (
-      <span
-        {...props.divProps}
-        className={
-          "relative cursor-pointer" +
-          (props.isSelected && props.text.canAnnotate
-            ? " bg-yellow-100 selectable selected"
-            : " selectable")
-        }
-        onClick={() => handleSingleOrDoubleClick()}
-        onMouseEnter={() => setIsHover(true)}
-        onMouseLeave={() => {
-          setIsHover(false);
-          setShowSearch(false);
-        }}
-      >
-        {showSearch && value.word && (
-          <span
-            className=" rounded-full bg-gradient-to-tr bg-yellow-300 p-0.5 absolute -top-8 left-0"
-            onClick={onClickSearch}
-          >
-            調
-          </span>
-        )}
-        <span
-          className={
-            (isHover ? "text-red-400" : "") +
-            (value.annotation?.length ? "underline" : "")
-          }
-        >
-          {value.word}
-        </span>
-        {isShow && value.word && value.canAnnotate && (
+  return (
+    <Tag
+      style={{ rubyPosition: "under" }}
+      {...props.divProps}
+      className={
+        "relative cursor-pointer rounded-md py-0.5" +
+        (props.isSelected && props.text.canAnnotate && props.mode === "edit"
+          ? " selectable selected"
+          : " selectable") +
+        ((isHover || isLocked) &&
+        props.text.canAnnotate &&
+        props.mode === "edit"
+          ? " text-red-400 shadow border"
+          : "")
+      }
+      onClick={handleOnSingleClick}
+      onMouseEnter={() => setIsHover(true)}
+      onMouseLeave={() => {
+        setIsHover(false);
+        setIsLocked(false);
+        setShowSearch(false);
+      }}
+    >
+      <span className={props.text.annotation?.length ? "underline" : ""}>
+        {props.text.word}
+      </span>
+      {props.mode === "edit" &&
+        props.text.canAnnotate && (
           <input
             ref={inputRef}
             placeholder="annotate..."
-            className=" z-50 absolute -bottom-7 left-0 shadow appearance-none border rounded w-min px-1 py-1 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-            value={value.annotation}
+            className={
+              (isShowInput ? "" : "hidden ") +
+              " z-50 absolute -bottom-7 left-0 shadow appearance-none border rounded w-min px-1 py-1 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+            }
+            value={props.text.annotation || ""}
             onChange={handleChangeValue}
             onKeyDown={handleKeyDown}
             onMouseEnter={() => setIsHover(true)}
             onMouseLeave={() => setIsHover(false)}
+            onClick={(e) => e.stopPropagation()}
           />
         )}
-      </span>
-    );
-  }
+      {props.showRuby && props.text.annotation && (
+        <>
+          {" "}
+          <rp>(</rp>
+          <rt className=" text-center text-orange-300">
+            {props.text.annotation}
+          </rt>
+          <rp>)</rp>
+        </>
+      )}
+    </Tag>
+  );
 };

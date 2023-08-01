@@ -3,8 +3,11 @@ import SelectionArea, { SelectionEvent } from "@viselect/react";
 import { PrettyWord } from "../components/PrettyWord";
 import { Text } from "../types/Text";
 
+export type Mode = "edit" | "view";
+
 type Props = {
   text: Text[];
+  mode: "edit" | "view";
   searchQuery?: string;
   showRuby: boolean;
   updateSelected: (selected: Set<number>) => void;
@@ -46,7 +49,7 @@ export const SmartText = (props: Props) => {
 
   return (
     <SelectionArea
-      className={props.showRuby ? "" : "container"}
+      className={props.mode == "edit" ? "container" : ""}
       onStart={onStart}
       onMove={onMove}
       selectables={".selectable"}
@@ -69,6 +72,7 @@ export const SmartText = (props: Props) => {
             <PrettyWord
               isSelected={false}
               text={{ word: " ", canAnnotate: false }}
+              mode={"view"}
               key={String(index * 2) + word.word}
               showRuby={false}
             />
@@ -77,6 +81,7 @@ export const SmartText = (props: Props) => {
           )}
           <PrettyWord
             text={word}
+            mode={props.mode}
             isSelected={selected.has(index * 2 + 1)}
             key={String(index * 2 + 1) + word.word}
             showRuby={props.showRuby}
