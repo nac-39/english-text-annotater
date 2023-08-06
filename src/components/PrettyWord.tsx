@@ -15,22 +15,25 @@ type Props = {
   mode: Mode;
   divProps?: HTMLElementProps["div"];
   updateValue?: (text: Text) => void;
+  onClickSearch?: () => void;
   searchQuery?: string;
 };
 
 export const PrettyWord = (props: Props) => {
   const [isHover, setIsHover] = useState(false);
   const [isLocked, setIsLocked] = useState(false);
-  const [showSearch, setShowSearch] = useState(false);
   const Tag: keyof JSX.IntrinsicElements = props.showRuby ? "ruby" : "span";
 
   const inputRef = useRef<HTMLInputElement>(null);
   const isShowInput = isLocked && props.text.word && props.text.canAnnotate;
 
   const handleOnSingleClick = (e: React.MouseEvent<HTMLSpanElement>) => {
-    if (inputRef && inputRef.current) inputRef.current.focus();
+    // hack: vueのnextTickのようなもの。inputがDOMのアクティビティツリーに追加されるまで待つ
+    setTimeout(() => {
+      if (inputRef && inputRef.current) inputRef.current.focus();
+    }, 0);
     if (e.ctrlKey || e.metaKey) {
-      searchInNewTab();
+      props.onClickSearch && props.onClickSearch();
     }
     if (props.text.canAnnotate) {
       setIsLocked(!isLocked);
@@ -38,14 +41,6 @@ export const PrettyWord = (props: Props) => {
     }
   };
 
-  const searchInNewTab = () => {
-    setShowSearch(!showSearch);
-    window.open(
-      `https://www.google.com/search?q=${props.text.word} ${props.searchQuery}`,
-      "_blank",
-      "noopener noreferrer"
-    );
-  };
   const handleChangeValue = (e: React.ChangeEvent<HTMLInputElement>) => {
     const newText = {
       word: props.text.word,
@@ -57,12 +52,11 @@ export const PrettyWord = (props: Props) => {
   };
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
-    if (e.nativeEvent.isComposing) return;
+    if (e.nativeEvent.isComposing) return; // 日本語入力中は無視
     // エンターキーで入力終われる
     if (e.key === "Enter") {
       setIsLocked(false);
       setIsHover(false);
-      setShowSearch(false);
     }
   };
 
@@ -73,7 +67,7 @@ export const PrettyWord = (props: Props) => {
       className={
         "relative cursor-pointer rounded-md py-0.5" +
         (props.isSelected && props.text.canAnnotate && props.mode === "edit"
-          ? " selectable selected"
+          ? " selectable selected shadow-inner border-2 border-blue-400"
           : " selectable") +
         ((isHover || isLocked) &&
         props.text.canAnnotate &&
@@ -86,29 +80,27 @@ export const PrettyWord = (props: Props) => {
       onMouseLeave={() => {
         setIsHover(false);
         setIsLocked(false);
-        setShowSearch(false);
       }}
     >
       <span className={props.text.annotation?.length ? "underline" : ""}>
         {props.text.word}
       </span>
-      {props.mode === "edit" &&
-        props.text.canAnnotate && (
-          <input
-            ref={inputRef}
-            placeholder="annotate..."
-            className={
-              (isShowInput ? "" : "hidden ") +
-              " z-50 absolute -bottom-7 left-0 shadow appearance-none border rounded w-min px-1 py-1 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-            }
-            value={props.text.annotation || ""}
-            onChange={handleChangeValue}
-            onKeyDown={handleKeyDown}
-            onMouseEnter={() => setIsHover(true)}
-            onMouseLeave={() => setIsHover(false)}
-            onClick={(e) => e.stopPropagation()}
-          />
-        )}
+      {props.mode === "edit" && props.text.canAnnotate && (
+        <input
+          ref={inputRef}
+          placeholder="annotate..."
+          className={
+            (isShowInput ? "" : "hidden ") +
+            " z-50 absolute -bottom-7 left-0 shadow appearance-none border rounded w-min px-1 py-1 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+          }
+          value={props.text.annotation || ""}
+          onChange={handleChangeValue}
+          onKeyDown={handleKeyDown}
+          onMouseEnter={() => setIsHover(true)}
+          onMouseLeave={() => setIsHover(false)}
+          onClick={(e) => e.stopPropagation()}
+        />
+      )}
       {props.showRuby && props.text.annotation && (
         <>
           {" "}

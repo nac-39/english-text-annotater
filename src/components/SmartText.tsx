@@ -20,6 +20,19 @@ export const SmartText = (props: Props) => {
   const updateData = (text: Text, index: number) => {
     props.updateWords(props.text.map((word, i) => (i === index ? text : word)));
   };
+  const searchInNewTab = () => {
+    if (selected.size === 0) return;
+    console.log("yes");
+    const selectedText = props.text
+      .filter((_, i) => selected.has(i * 2 + 1))
+      .map((v) => v.word)
+      .join(" ");
+    window.open(
+      `https://www.google.com/search?q=${selectedText} ${props.searchQuery}`,
+      "_blank",
+      "noopener noreferrer"
+    );
+  };
   const extractIds = (els: Element[]): number[] =>
     els
       .map((v) => v.getAttribute("data-key"))
@@ -88,6 +101,7 @@ export const SmartText = (props: Props) => {
             updateValue={(text) => updateData(text, index)}
             searchQuery={props.searchQuery}
             divProps={{ "data-key": index * 2 + 1 }}
+            onClickSearch={searchInNewTab}
           />
         </>
       ))}
