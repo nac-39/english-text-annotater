@@ -22,7 +22,6 @@ export const SmartText = (props: Props) => {
   };
   const searchInNewTab = () => {
     if (selected.size === 0) return;
-    console.log("yes");
     const selectedText = props.text
       .filter((_, i) => selected.has(i * 2 + 1))
       .map((v) => v.word)
@@ -96,6 +95,9 @@ export const SmartText = (props: Props) => {
             text={word}
             mode={props.mode}
             isSelected={selected.has(index * 2 + 1)}
+            isFirstSelectedWord={
+              Array.from(selected).sort((a, b) => a - b)[0] === index * 2 + 1
+            }
             key={String(index * 2 + 1) + word.word}
             showRuby={props.showRuby}
             updateValue={(text) => updateData(text, index)}

@@ -12,6 +12,7 @@ type Props = {
   text: Text;
   showRuby: boolean;
   isSelected: boolean;
+  isFirstSelectedWord?: boolean;
   mode: Mode;
   divProps?: HTMLElementProps["div"];
   updateValue?: (text: Text) => void;
@@ -22,6 +23,7 @@ type Props = {
 export const PrettyWord = (props: Props) => {
   const [isHover, setIsHover] = useState(false);
   const [isLocked, setIsLocked] = useState(false);
+  const [showSearchExplain, setShowSearchExplain] = useState(false);
   const Tag: keyof JSX.IntrinsicElements = props.showRuby ? "ruby" : "span";
 
   const inputRef = useRef<HTMLInputElement>(null);
@@ -82,6 +84,34 @@ export const PrettyWord = (props: Props) => {
         setIsLocked(false);
       }}
     >
+      {props.text.canAnnotate &&
+        props.mode === "edit" &&
+        props.isFirstSelectedWord && (
+          <>
+            <span
+              onClick={props.onClickSearch}
+              onMouseEnter={(e) => {
+                setShowSearchExplain(true);
+                e.stopPropagation();
+              }}
+              onMouseLeave={(e) => {
+                setShowSearchExplain(false);
+                e.stopPropagation();
+              }}
+              className="absolute -top-6 px-0.5 left-0 text-sm rounded-full border-gray-400 hover:bg-gray-300 hover:shadow cursor-pointer"
+            >
+              🔍
+            </span>
+            <span>
+              {showSearchExplain && (
+                <span className="absolute -top-6 left-4 text-[2px] w-fit text-gray-400 px-1 py-0.5">
+                  Search
+                </span>
+              )}
+            </span>
+          </>
+        )}
+
       <span className={props.text.annotation?.length ? "underline" : ""}>
         {props.text.word}
       </span>
